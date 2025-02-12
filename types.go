@@ -510,7 +510,7 @@ type OrderPayment struct {
 // OrderItem type.
 type OrderItem struct {
 	ID                    int        `json:"id,omitempty"`
-	InitialPrice          float32    `json:"initialPrice,omitempty"`
+	InitialPrice          float64    `json:"initialPrice,omitempty"`
 	PurchasePrice         float32    `json:"purchasePrice,omitempty"`
 	DiscountTotal         float32    `json:"discountTotal,omitempty"`
 	DiscountManualAmount  float32    `json:"discountManualAmount,omitempty"`
@@ -1284,7 +1284,7 @@ type CostRecord struct {
 	Comment  string   `json:"comment,omitempty"`
 	DateFrom string   `json:"dateFrom,omitempty"`
 	DateTo   string   `json:"dateTo,omitempty"`
-	Summ     float32  `json:"summ,omitempty"`
+	Summ     float64  `json:"summ,omitempty"`
 	CostItem string   `json:"costItem,omitempty"`
 	UserID   int      `json:"userId,omitempty"`
 	Order    *Order   `json:"order,omitempty"`
@@ -1297,7 +1297,7 @@ type Cost struct {
 	ID        int      `json:"id,omitempty"`
 	DateFrom  string   `json:"dateFrom,omitempty"`
 	DateTo    string   `json:"dateTo,omitempty"`
-	Summ      float32  `json:"summ,omitempty"`
+	Summ      float64  `json:"summ,omitempty"`
 	CostItem  string   `json:"costItem,omitempty"`
 	Comment   string   `json:"comment,omitempty"`
 	CreatedAt string   `json:"createdAt,omitempty"`
