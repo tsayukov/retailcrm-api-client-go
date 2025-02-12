@@ -1,6 +1,6 @@
 module github.com/retailcrm/api-client-go/v2
 
-go 1.13
+go 1.23
 
 require (
 	github.com/google/go-querystring v1.1.0

@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"io"
 	"io/ioutil"
+	"iter"
 	"log"
 	"net/http"
 	"net/url"
@@ -2563,6 +2564,30 @@ func (c *Client) Orders(parameters OrdersRequest) (OrdersResponse, int, error) {
 	return resp, status, nil
 }
 
+func (c *Client) AllOrders(parameters OrdersRequest) iter.Seq2[OrdersResponse, error] {
+	return func(yield func(OrdersResponse, error) bool) {
+		for {
+			response, status, err := c.Orders(parameters)
+			if err != nil {
+				if apiErr, ok := AsAPIError(err); ok {
+					err = fmt.Errorf("retailcrm.Orders: status %d, API error: %s", status, apiErr)
+				} else {
+					err = fmt.Errorf("retailcrm.Orders: status %d, error: %w", status, err)
+				}
+			}
+
+			if !yield(response, err) {
+				return
+			}
+
+			if parameters.Page >= response.Pagination.TotalPageCount {
+				return
+			}
+			parameters.Page += 1
+		}
+	}
+}
+
 // OrdersCombine combines given orders
 //
 // For more information see http://www.simla.com/docs/Developers/API/APIVersions/APIv5#post--api-v5-orders-combine
@@ -5000,6 +5025,30 @@ func (c *Client) Costs(costs CostsRequest) (CostsResponse, int, error) {
 	}
 
 	return resp, status, nil
+}
+
+func (c *Client) AllCosts(costs CostsRequest) iter.Seq2[CostsResponse, error] {
+	return func(yield func(CostsResponse, error) bool) {
+		for {
+			response, status, err := c.Costs(costs)
+			if err != nil {
+				if apiErr, ok := AsAPIError(err); ok {
+					err = fmt.Errorf("retailcrm.Costs: status %d, API error: %s", status, apiErr)
+				} else {
+					err = fmt.Errorf("retailcrm.Costs: status %d, error: %w", status, err)
+				}
+			}
+
+			if !yield(response, err) {
+				return
+			}
+
+			if costs.Page >= response.Pagination.TotalPageCount {
+				return
+			}
+			costs.Page += 1
+		}
+	}
 }
 
 // CostCreate create the cost
